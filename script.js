@@ -48,3 +48,30 @@ addBtn.addEventListener('click', addTask);
 input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addTask();
 });
+// 1. Select the quote elements
+const quoteText = document.getElementById('quote-text');
+const quoteAuthor = document.getElementById('quote-author');
+
+// 2. The function that "talks" to the internet
+async function getQuote() {
+    try {
+        // We 'await' the response from the server
+        const response = await fetch('https://dummyjson.com/quotes/random');
+        
+        // We turn that response into a readable JSON object
+        const data = await response.json();
+        
+        // 3. Update the UI with the real data
+        quoteText.innerText = `"${data.quote}"`;
+        quoteAuthor.innerText = `- ${data.author}`;
+        
+    } catch (error) {
+        // If the internet is down, we show an error
+        quoteText.innerText = "Be the change you wish to see in the world.";
+        quoteAuthor.innerText = "- Mahatma Gandhi";
+        console.log("Error fetching quote:", error);
+    }
+}
+
+// Run the function as soon as the page loads
+getQuote();
